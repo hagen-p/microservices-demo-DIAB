@@ -65,6 +65,7 @@ namespace cartservice
                 span.SetTag("span.kind", "server");
                 span.SetTag("component", "rpc");
                 span.SetTag("grpc.method", "/hipstershop.CartService/AddItem");
+                span.SetTag("db.system", "redis");
 
                 await cartStore.AddItemAsync(request.UserId, request.Item.ProductId, request.Item.Quantity);
                 return Empty;
@@ -79,6 +80,7 @@ namespace cartservice
                 span.SetTag("span.kind", "server");
                 span.SetTag("component", "rpc");
                 span.SetTag("grpc.method", "/hipstershop.CartService/EmptyCart");
+                span.SetTag("db.system", "redis");
 
                 await cartStore.EmptyCartAsync(request.UserId);
                 return Empty;
@@ -93,6 +95,7 @@ namespace cartservice
                 span.SetTag("span.kind", "server");
                 span.SetTag("component", "rpc");
                 span.SetTag("grpc.method", "/hipstershop.CartService/GetCart");
+                span.SetTag("db.system", "redis");
 
                 return cartStore.GetCartAsync(request.UserId);
             }

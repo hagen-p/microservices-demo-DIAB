@@ -29,7 +29,7 @@ spec:
       tolerations:
       nodeSelector:
       containers:
-        - name: server
+        - name: adserver
           image: adservice
           imagePullPolicy: Always
           ports:
@@ -43,12 +43,22 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: OTEL_PROPAGATORS
+              value: "b3multi" 
+            - name: OTEL_EXPORTER
+              value: otlp
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://$(NODE_IP):4317
+            - name: SPLUNK_PROFILER_ENABLED
+              value: "true"
+            - name: SPLUNK_PROFILER_MEMORY_ENABLED
+              value: "true"   
+            - name: ENABLE_COPYRIGHT_CERTIFICATION
+              value: "true"
+            - name: "STOCK_PHOTO_MAX_FINGERPRINT_SIZE"
+              value; 100000  
             - name: JAVA_TOOL_OPTIONS
               value: -javaagent:/opt/sfx/splunk-otel-javaagent-all.jar
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: 'http://$(NODE_IP):4317'
-            - name: OTEL_TRACES_EXPORTER
-              value: otlp
           resources:
             requests:
               cpu: 200m
@@ -66,6 +76,9 @@ spec:
             periodSeconds: 30
             exec:
               command: ['/bin/grpc_health_probe', '-addr=:9555']
+      volumes:
+        - emptyDir: {}
+          name: sfx-instrumentation
 ---
 apiVersion: v1
 kind: Service
