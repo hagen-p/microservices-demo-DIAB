@@ -15,9 +15,8 @@ description = 'Ad Service'
 group = "adservice"
 version = "0.1.1-SNAPSHOT"
 
-def grpcVersion = "1.42.1"
-def jacksonVersion = "2.12.5"
-def protocVersion = "3.17.3"
+def grpcVersion = "1.52.1"
+def protocVersion = "3.21.12"
 
 tasks.withType(JavaCompile) {
     sourceCompatibility = JavaVersion.VERSION_1_8
