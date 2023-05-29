@@ -1,7 +1,5 @@
-#FROM microsoft/dotnet:2.2-sdk-alpine as builder
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine as builder
-
-RUN apk --update add curl tar
+ARG NET_VERSION=7.0
+FROM mcr.microsoft.com/dotnet/sdk:${NET_VERSION} as builder
 
 WORKDIR /app
 COPY . .
