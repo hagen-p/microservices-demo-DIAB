@@ -12,7 +12,12 @@
     } else {
       document.addEventListener("DOMContentLoaded", fn);
     }
-  }
+    span = tracer.startSpan('ProductDetails', {
+        	attributes: {
+            'workflow.name': 'ProductDetails_{{$.product.Item.Name}}'
+        	}
+      	});
+    }
 
   docReady(() => {
     const formElem = document.getElementsByTagName("form")[1];
@@ -21,8 +26,10 @@
       fetch("/cart", {
         method: "POST",
         body: new FormData(formElem),
-      }).then(() => (window.location.href = "/cart"));
-    };
+      }).then(() => {	span.end();
+      window.location.href = "/cart";
+    });
+  };
   });
 </script>
 <main role="main">

@@ -2,7 +2,15 @@
     {{ template "header" . }}
 <script>
   // Fake javascript error
+  span = tracer.startSpan('CartPageError', {
+        attributes: {
+            'workflow.name': 'CartPageError',
+            'error': true
+    }
+    });
   console.error("Uncaught TypeError: Cannot read property 'Prcie' of undefined");
+
+  span.end();
 
   function getProductPrice() {
     const Payment = undefined;
@@ -27,6 +35,12 @@
       setTimeout(fn, 1);
     } else {
       document.addEventListener("DOMContentLoaded", fn);
+
+      span = tracer.startSpan('AddToCart', {
+      	attributes: {
+      		'workflow.name': 'AddToCart'
+  	    }
+      });
     }
   }
 
@@ -34,11 +48,21 @@
     const formElem = document.getElementsByTagName("form")[2];
     formElem.onsubmit = (e) => {
         e.preventDefault();
+
+        span.end();
+
+        span = tracer.startSpan('PlaceOrder', {
+        attributes: {
+            'workflow.name': 'PlaceOrder'
+    }
+    });
+
       fetch("/cart/checkout", {
         method: "POST",
         body: new FormData(formElem),
       }).then(() => {
-          setTimeout(() => formElem.submit(), 2000);
+          setTimeout(() => {formElem.submit();
+            span.end();}, 2000);
       });
     };
   });
@@ -107,12 +131,12 @@
                                     <div class="col-md-5 mb-3">
                                         <label for="street_address">Street Address</label>
                                         <input type="text" class="form-control"  name="street_address"
-                                            id="street_address" value="270 Brannan St" required>
+                                            id="street_address" value="1600 Amphitheatre Parkway" required>
                                     </div>
                                     <div class="col-md-2 mb-3">
                                         <label for="zip_code">Zip Code</label>
                                         <input type="text" class="form-control"
-                                            name="zip_code" id="zip_code" value="94107" required pattern="\d{4,5}">
+                                            name="zip_code" id="zip_code" value="94043" required pattern="\d{4,5}">
                                     </div>
 
                                 </div>
@@ -120,7 +144,7 @@
                                     <div class="col-md-5 mb-3">
                                             <label for="city">City</label>
                                             <input type="text" class="form-control" name="city" id="city"
-                                                value="San Francisco" required>
+                                                value="Mountain View" required>
                                         </div>
                                     <div class="col-md-2 mb-3">
                                         <label for="state">State</label>
