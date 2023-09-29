@@ -44,7 +44,7 @@
     <script src="https://cdn.signalfx.com/o11y-gdi-rum/latest/splunk-otel-web.js" crossorigin="anonymous"></script>
     <script src="https://cdn.signalfx.com/o11y-gdi-rum/latest/splunk-otel-web-session-recorder.js" crossorigin="anonymous"></script>
     <script>
-        SplunkRum.init({ 
+        window.SplunkRum && window.SplunkRum.init({ 
             beaconUrl: 'https://rum-ingest.{{ $.rum_realm }}.signalfx.com/v1/rum',
             rumAuth: '{{ $.rum_auth }}',
             app: '{{ $.rum_app_name }}',
