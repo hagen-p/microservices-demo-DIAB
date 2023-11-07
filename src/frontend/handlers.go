@@ -399,6 +399,11 @@ func (fe *frontendServer) generateCartEmptyHandler(w http.ResponseWriter, r *htt
 }
 
 func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Request) {
+    // Add system behavior as header context
+	//behavior_marshalled, err := json.Marshal(behavior)
+	//md := metadata.New(map[string]string{"x-system-behavior": string(behavior_marshalled)})
+	//ctx := metadata.NewOutgoingContext(r.Context(), md)
+	ctx := r.Context()
 	log := getLoggerWithTraceFields(r.Context())
 	log.Debug("placing order")
 
@@ -437,6 +442,8 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	log.WithField("order", order.GetOrder().GetOrderId()).Info("order placed")
+
+	addOrderIDToSpan(ctx,order.GetOrder().GetOrderId())
 
 	order.GetOrder().GetItems()
 	recommendations, _ := fe.getRecommendations(r.Context(), sessionID(r), nil)
@@ -581,4 +588,10 @@ func getLoggerWithTraceFields(ctx context.Context) *logrus.Entry {
 		fields["service.name"] = "frontend"
 	}
 	return log.WithFields(fields)
+}
+
+func addOrderIDToSpan(ctx context.Context,order string) {
+	if span := opentracing.SpanFromContext(ctx); span != nil {
+		span.SetTag("orderId",order)		
+	}
 }

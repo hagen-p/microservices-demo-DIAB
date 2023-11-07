@@ -7,3 +7,4 @@ city-bike.jpg,,https://unsplash.com/photos/Lpe9u9etwMU
 typewriter.jpg,,https://unsplash.com/photos/mk7D-4UCfmg
 barista-kit.jpg,,https://unsplash.com/photos/ZiRyGGIpRCw
 terrarium.jpg,,https://unsplash.com/photos/E9QYLj0724Y
+bike.jpg,,https://unsplash.com/photos/a-blue-bicycle-parked-next-to-a-window-2-QWpYPhQcM

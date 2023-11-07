@@ -16,3 +16,4 @@ node_modules
 
 # ignore auto-generated k8s manifests
 release/*.yaml
+terraform.tfstate
